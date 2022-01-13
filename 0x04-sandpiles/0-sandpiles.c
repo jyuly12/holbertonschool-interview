@@ -52,6 +52,11 @@ static void print_grid(int grid[3][3])
 static void correct_grids(int grid1[3][3])
 {
 	int i, j;
+	int new_grid[3][3] = {
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0}
+	};
 
 	for (i = 0; i < 3; i++)
 	{
@@ -74,6 +79,7 @@ static void correct_grids(int grid1[3][3])
 			}
 		}
 	}
+	sum_grids(grid1, new_grid);
 }
 
 /**

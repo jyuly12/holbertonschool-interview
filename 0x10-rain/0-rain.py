@@ -15,15 +15,16 @@ def rain(walls):
         walls: is a list of non-negative integers.
     """
     count = 0
+    large_arr = len(walls)
 
-    for i in range(1, len(walls) - 1):
+    for i in range(1, large_arr - 1):
         left = walls[i]
-    for j in range(i):
-        left = max(left, walls[j])
-        right = walls[i]
+        for j in range(i):
+            left = max(left, walls[j])
+            right = walls[i]
 
-    for j in range(i + 1, len(walls)):
-        right = max(right, walls[j])
+        for j in range(i + 1, large_arr):
+            right = max(right, walls[j])
 
-    count = count + (min(left, right) - walls[i])
+        count = count + (min(left, right) - walls[i])
     return count

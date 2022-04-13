@@ -1,7 +1,19 @@
 #!/usr/bin/python3
+"""
+This module defines the rain function
+"""
 
 
 def rain(walls):
+    """
+    Given a list of non-negative integers representing
+    the heights of walls with unit width 1, as if viewing
+    the cross-section of a relief map, calculate how many
+    square units of water will be retained after it rains.
+
+    parameter:
+        walls: is a list of non-negative integers.
+    """
     count = 0
 
     for i in range(1, len(walls) - 1):

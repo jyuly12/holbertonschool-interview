@@ -1,7 +1,7 @@
 #include "sort.h"
 
 /**
- * _swap - swaps two integers
+ * fn_swap - swaps two integers
  * @a: integer to swap
  * @b: integer to swap
  */
@@ -18,7 +18,7 @@ void fn_swap(int *a, int *b)
 /**
  * get_heap - turns an array into a max heap
  * @array: array of integers to heapify
- * @idx: current given index within array
+ * @i: current given index within array
  * @size: size of the array
  * @len: size to use as boundaries
  */

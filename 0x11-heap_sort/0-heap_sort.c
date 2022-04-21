@@ -1,70 +1,66 @@
 #include "sort.h"
 
 /**
-* heap_sort - sorts an array of integers 
-*
-* @array: The array to be sorted
-* @size: 
-*/
-void shiftRight(int* arr, int low, int high, size_t size)
+ * _swap - swaps two integers
+ * @a: integer to swap
+ * @b: integer to swap
+ */
+
+void fn_swap(int *a, int *b)
 {
-    int root = low;
-    while ((root*2)+1 <= high)
-    {
-        int leftChild = (root * 2) + 1;
-        int rightChild = leftChild + 1;
-        int swapIdx = root;
-        if (arr[swapIdx] < arr[leftChild])
-        {
-            swapIdx = leftChild;
-        }
-        if ((rightChild <= high) && (arr[swapIdx] < arr[rightChild]))
-        {
-            swapIdx = rightChild;
-        }
-        if (swapIdx != root)
-        {
-            int tmp = arr[root];
-            arr[root] = arr[swapIdx];
-            arr[swapIdx] = tmp;
-            
-            root = swapIdx;
-        }
-        else
-        {
-            break;
-        }
-      print_array(arr, size);
-      
-    }
-  
-    return;
+	int c;
+
+	c = *b;
+	*b = *a;
+	*a = c;
 }
-void heapify(int* arr, int low, int high, size_t size)
+
+/**
+ * get_heap - turns an array into a max heap
+ * @array: array of integers to heapify
+ * @idx: current given index within array
+ * @size: size of the array
+ * @len: size to use as boundaries
+ */
+void get_heap(int *array, int idx, int size, int len)
 {
-    int midIdx = (high - low -1)/2;
-    while (midIdx >= 0)
-    {
-        shiftRight(arr, midIdx, high, size);
-        --midIdx;  
-      print_array(arr, size);
-    }
-    return;
+	int left = (idx * 2) + 1;
+	int right = (idx * 2) + 2;
+	int max = idx;
+
+	if (left > 0 && left < len && array[left] > array[max])
+		max = left;
+	if (right > 0 && right < len && array[right] > array[max])
+		max = right;
+	if (max != idx)
+	{
+		_swap(array + max, array + idx);
+		print_array(array, size);
+		get_heap(array, max, size, len);
+	}
 }
-void heap_sort(int *arr, size_t size)
+/**
+ * heap_sort - sorts an array of integers
+ *
+ * @array: array of integers to sort
+ * @size: size of the array
+ */
+void heap_sort(int *array, size_t size)
 {
-    int high = size - 1;
-        print_array(arr, size);
-    
-    heapify(arr, 0, size-1, size);
-    while (high > 0)
-    {
-        int tmp = arr[high];
-        arr[high] = arr[0];
-        arr[0] = tmp;
-        --high;
-        shiftRight(arr, 0, high, size); 
-    }
-    
-    return;
+	int i = (size / 2) - 1;
+	int end = size - 1;
+
+	while (i >= 0)
+	{
+		get_heap(array, i, size, size);
+		i--;
+	}
+
+	while (end > 0)
+	{
+		fn_swap(array + end, array);
+		print_array(array, size);
+		get_heap(array, 0, size, end);
+		end--;
+	}
 }

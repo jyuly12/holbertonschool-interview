@@ -10,5 +10,7 @@
 
 void heap_sort(int *arr, size_t size);
 void print_array(const int *array, size_t size);
+void get_heap(int *array, int i, int size, int len);
+void fn_swap(int *a, int *b);
 
 #endif /*LIST_H*/

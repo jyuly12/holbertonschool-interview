@@ -34,7 +34,7 @@ void get_heap(int *array, int i, int size, int len)
 		max = right;
 	if (max != i)
 	{
-		_swap(array + max, array + i);
+		fn_swap(array + max, array + i);
 		print_array(array, size);
 		get_heap(array, max, size, len);
 	}

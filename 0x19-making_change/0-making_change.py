@@ -5,17 +5,15 @@ import sys
 
 def makeChange(coins, total):
 
-    if (total <= 0):
+    if total <= 0:
         return 0
 
-    array = [0] * (total + 1)
-    for i in range(1, total + 1):
-        array[i] = sys.maxsize
+    array = [float('inf')] * (total + 1)
+    array[0] = 0
+
+    for i in range(1, len(array)):
         for j in range(len(coins)):
-            if (coins[j] <= i):
-                changes = array[i - coins[j]]
-                if (changes != sys.maxsize and changes + 1 < array[i]):
-                    array[i] = changes + 1
-    if array[total] == sys.maxsize:
-        return -1
-    return array[total]
+            if coins[j] <= i:
+                array[i] = min(array[i], array[i - coins[j]] + 1)
+
+    return array[i] if array[i] != float('inf') else -1

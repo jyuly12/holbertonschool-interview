@@ -4,16 +4,14 @@ import sys
 
 
 def makeChange(coins, total):
+
     if (total <= 0):
         return 0
-    coins_length = len(coins)
-    array = [0] * (total + 1)
 
+    array = [0] * (total + 1)     
     for i in range(1, total + 1):
         array[i] = sys.maxsize
-
-    for i in range(1, total + 1):
-        for j in range(coins_length):
+        for j in range(len(coins)):
             if (coins[j] <= i):
                 changes = array[i - coins[j]]
                 if (changes != sys.maxsize and changes + 1 < array[i]):

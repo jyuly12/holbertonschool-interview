@@ -46,4 +46,4 @@ int tree_is_BST(const binary_tree_t *tree, int *prev);
 int binary_tree_is_avl(const binary_tree_t *tree);
 
 
-#endif /* BINARY_TREES_H */
+#endif

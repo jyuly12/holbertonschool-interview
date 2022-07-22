@@ -1,96 +1,105 @@
 #include "binary_trees.h"
 
-/* Original code from http://stackoverflow.com/a/13755911/5184480 */
-
 /**
- * print_t - Stores recursively each level in an array of strings
+ * tree_height - measures the height of a binary tree
+ * @tree: pointer to the root node of the tree to measure the height
  *
- * @tree: Pointer to the node to print
- * @offset: Offset to print
- * @depth: Depth of the node
- * @s: Buffer
- *
- * Return: length of printed tree after process
+ * Return: Height or 0 if tree is NULL
  */
-static int print_t(const binary_tree_t *tree, int offset, int depth, char **s)
+size_t tree_height(const binary_tree_t *tree)
 {
-	char b[6];
-	int width, left, right, is_left, i;
+	size_t height_l = 0;
+	size_t height_r = 0;
 
 	if (!tree)
 		return (0);
-	is_left = (tree->parent && tree->parent->left == tree);
-	width = sprintf(b, "(%03d)", tree->n);
-	left = print_t(tree->left, offset, depth + 1, s);
-	right = print_t(tree->right, offset + left + width, depth + 1, s);
-	for (i = 0; i < width; i++)
-		s[depth][offset + left + i] = b[i];
-	if (depth && is_left)
-	{
-		for (i = 0; i < width + right; i++)
-			s[depth - 1][offset + left + width / 2 + i] = '-';
-		s[depth - 1][offset + left + width / 2] = '.';
-	}
-	else if (depth && !is_left)
-	{
-		for (i = 0; i < left + width; i++)
-			s[depth - 1][offset - width / 2 + i] = '-';
-		s[depth - 1][offset + left + width / 2] = '.';
-	}
-	return (left + width + right);
+
+	if (tree->left)
+		height_l = 1 + tree_height(tree->left);
+
+	if (tree->right)
+		height_r = 1 + tree_height(tree->right);
+
+	if (height_l > height_r)
+		return (height_l);
+	return (height_r);
 }
 
 /**
- * _height - Measures the height of a binary tree
- *
- * @tree: Pointer to the node to measures the height
- *
- * Return: The height of the tree starting at @node
+ * isBST - check if each node has in the left a less value than himself
+ * @root: node to check
+ * @min: min value to check with the node at the left
+ * @max: max value to check with the node at the right
+ * Return: 1 if is a BST or 0 otherwise
  */
-static size_t _height(const binary_tree_t *tree)
+int isBST(
+	const binary_tree_t *root,
+	const binary_tree_t *min,
+	const binary_tree_t *max
+)
 {
-	size_t height_l;
-	size_t height_r;
+	if (root == NULL)
+		return (1);
 
-	height_l = tree->left ? 1 + _height(tree->left) : 0;
-	height_r = tree->right ? 1 + _height(tree->right) : 0;
-	return (height_l > height_r ? height_l : height_r);
+	if (min != NULL && root->n <= min->n)
+		return (0);
+
+	if (max != NULL && root->n >= max->n)
+		return (0);
+
+	return (isBST(root->left, min, root) &&
+			isBST(root->right, root, max));
+}
+/**
+ * tree_is_bst - checks if a binary tree is a nid Binary Search Tree
+ * @tree: a pointer to the node node of the tree to check
+ * Return: 1 if tree is a nid BST, and 0 otherwise
+ * If tree is NULL, return 0
+ */
+int tree_is_bst(const binary_tree_t *tree)
+{
+	if (!tree)
+		return (0);
+
+	return (isBST(tree, NULL, NULL));
 }
 
 /**
- * binary_tree_print - Prints a binary tree
+ * avl_check - checks if a binary tree is a valid AVL Tree
+ * @tree: pointer to the root node of the tree to check
  *
- * @tree: Pointer to the root node of the tree to print
+ * Return: 1 if tree is a valid AVL Tree, and 0 otherwise
  */
-void binary_tree_print(const binary_tree_t *tree)
+int avl_check(const binary_tree_t *tree)
 {
-	char **s;
-	size_t height, i, j;
+	int diff, heightL = 0, heightR = 0;
 
 	if (!tree)
-		return;
-	height = _height(tree);
-	s = malloc(sizeof(*s) * (height + 1));
-	if (!s)
-		return;
-	for (i = 0; i < height + 1; i++)
-	{
-		s[i] = malloc(sizeof(**s) * 255);
-		if (!s[i])
-			return;
-		memset(s[i], 32, 255);
-	}
-	print_t(tree, 0, 0, s);
-	for (i = 0; i < height + 1; i++)
-	{
-		for (j = 254; j > 1; --j)
-		{
-			if (s[i][j] != ' ')
-				break;
-			s[i][j] = '\0';
-		}
-		printf("%s\n", s[i]);
-		free(s[i]);
-	}
-	free(s);
+		return (1);
+
+	if (!tree_is_bst(tree))
+		return (0);
+
+	heightL = tree_height(tree->left);
+	heightR = tree_height(tree->right);
+
+	diff = abs(heightL - heightR);
+
+	if (diff == 0 && avl_check(tree->left) && avl_check(tree->right))
+		return (1);
+	return (0);
+}
+
+/**
+ * binary_tree_is_avl - checks if a binary tree is a valid AVL Tree
+ * @tree: pointer to the root node of the tree to check
+ *
+ * Return: 1 if tree is a valid AVL Tree, and 0 otherwise
+ */
+int binary_tree_is_avl(const binary_tree_t *tree)
+{
+	if (!tree)
+		return (0);
+
+	return (avl_check(tree));
 }

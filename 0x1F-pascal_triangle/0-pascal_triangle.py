@@ -3,6 +3,7 @@
 Defines the function that representing the Pascal’s triangle.
 """
 
+
 def pascal_triangle(n):
     """
     Returns a list of lists of integers representing
@@ -11,7 +12,7 @@ def pascal_triangle(n):
 
     if n <= 0:
         return []
-    
+
     newTriangle = [[1]]
     while len(newTriangle) != n:
         previous = newTriangle[-1]
